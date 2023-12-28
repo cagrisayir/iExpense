@@ -13,10 +13,14 @@ struct AddView: View {
     @State private var amount = 0.0
 
     @ObservedObject var expenses: Expenses
-    
+
     @Environment(\.dismiss) var dismiss
 
     let types = ["Business", "Personal"]
+
+    var buttonDisabled: Bool {
+        if name.isEmpty { return true } else { return false }
+    }
 
     var body: some View {
         NavigationStack {
@@ -34,7 +38,7 @@ struct AddView: View {
                     let item = ExpenseItem(name: name, type: type, amount: amount)
                     expenses.items.append(item)
                     dismiss()
-                }
+                }.disabled(buttonDisabled)
             }
         }.navigationTitle("Add new expense")
     }
