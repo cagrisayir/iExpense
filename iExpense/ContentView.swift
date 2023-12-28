@@ -15,6 +15,8 @@ struct User: Codable {
 struct ContentView: View {
     @StateObject var expenses = Expenses()
 
+    @State private var showingAddExpense = false
+
     func removeItems(at offsets: IndexSet) {
         expenses.items.remove(atOffsets: offsets)
     }
@@ -30,14 +32,16 @@ struct ContentView: View {
             .navigationTitle("iExpense")
             .toolbar {
                 Button {
-                    let expense = ExpenseItem(name: "Test", type: "Personal",
-                                              amount: 5)
-                    expenses.items.append(expense)
+                    showingAddExpense = true
                 } label: {
                     Image(systemName: "plus")
                 }
             }
         }
+        .sheet(isPresented: $showingAddExpense, content: {
+            AddView(expenses: expenses)
+        })
+        
     }
 }
 
